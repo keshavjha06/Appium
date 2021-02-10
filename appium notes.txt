@@ -22,6 +22,12 @@ adb install C:\Users\Keshav\Downloads\General-Store.apk
 adb install C:\Users\Keshav\Downloads\ApiDemos-debug.apk
 
 
+//adb devices- Unauthorized
+//adb kill-server
+//adb start-server
+//adb devices
+
+
 C:\Users\Keshav\AppData\Local\Android\Sdk\tools\bin - forUi automator
 
 default toast message:
