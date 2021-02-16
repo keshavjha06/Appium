@@ -45,6 +45,9 @@ mvn test -P(P stands for profile) and then name Regression/Smoke
 
 ex:mvn test -PSmoke
 
+C:\Users\Keshav\eclipse-workspace\AppiumFramework
+mvn test -Ddevicename=Keshav- mvn command to run test case from cmd.
+
 //rahulonlinetutor@gmail.com
 
 C:\Users\Keshav\Downloads - jenkins path
@@ -86,6 +89,7 @@ import import static io.appium.java_client.touch.offset.ElementOption.element;
 
 import manually
 
+when we have multiple objects with same name we can go with index
 
 udemy notes:
 
@@ -250,3 +254,21 @@ for json to web element converter error, add old selenium dependency(3.141.59) i
 18. End to End Framework design from Scratch part -2 (Building Utilities)
 130. Sending Global properties from Maven commands into tests
 remove <source>test</source> fromt testng dependency to remove error in pom.xml execution
+
+iOS:
+from mac we can work both on android and iOS so platform name is required.
+XCUITest in iOS
+accessibilityId can be only used for iOS
+Appium inspector for iOS like uiautomatorviewer for android
+Appium server start from Appium desktop
+simulator
+
+for scrolling in iOS below code:
+Dimension size = driver.manage().window().getSize();
+        int x = size.getWidth() / 2;
+        int starty = (int) (size.getHeight() * 0.60);
+        int endy = (int) (size.getHeight() * 0.10);
+        driver.swipe(x, starty, x, endy, 2000);
+
+provisioning profile of webdriveragentrunner
+
