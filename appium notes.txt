@@ -10,7 +10,9 @@ C:\Program Files\nodejs\node_modules\npm\bin - in path folder
 
 command prompt:
 npm install -g appium-->enter
-appium -->enter
+appium -->enter to start appium
+ctrl+ c then Y to end session
+appium - p 4725 to change defaultport(4723)
 npm uninstall -g appium - for uninstalling appium
 
 cd C:\Users\Keshav\AppData\Local\Android\Sdk\platform-tools - emulator -avd Demo
@@ -48,7 +50,6 @@ ex:mvn test -PSmoke
 C:\Users\Keshav\eclipse-workspace\AppiumFramework
 mvn test -Ddevicename=Keshav- mvn command to run test case from cmd.
 
-//rahulonlinetutor@gmail.com
 
 C:\Users\Keshav\Downloads - jenkins path
 java -jar jenkins.war -httpPort=8080
@@ -181,7 +182,12 @@ need to import these packages manually for mobile gestures becoz eclipse will no
 12:17
 9. Hybrid App Automation with Appium
 63. TestCase -Automate Hybrid App with context Switch
-cssSelectors and name attribute is not supported by appium
+cssSelectors and name attribute is not supported by appium.locators of appium are:
+ID
+Class Name
+Xpath
+Accessibility ID
+Android UI Automator
 
 5:47
 9. Hybrid App Automation with Appium
