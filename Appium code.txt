@@ -55,4 +55,51 @@ AndroidDriver<AndroidElement> driver = capabilities();
 		t.longPress(element(source)).moveTo(element(destination)).release().perform();
 
 driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Radio Group\"));");
+
+start server:
+
+public void startServer() {
+    //Set Capabilities
+    cap = new DesiredCapabilities();
+    cap.setCapability("noReset", "false");
+
+    //Build the Appium service
+    builder = new AppiumServiceBuilder();
+    builder.withIPAddress("127.0.0.1");
+    builder.usingPort(4723);
+    builder.withCapabilities(cap);
+    builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
+    builder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
+
+    //Start the server with the builder
+    service = AppiumDriverLocalService.buildService(builder);
+    service.start();
+}
+
+public void stopServer() {
+    service.stop();
+}
+		
+Appium switch context:
+
+// assuming we have a set of capabilities
+driver = new AppiumDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+
+Set<String> contextNames = driver.getContextHandles();
+for (String contextName : contextNames) {
+    System.out.println(contextName); //prints out something like NATIVE_APP \n WEBVIEW_1
+}
+driver.context(contextNames.toArray()[1]); // set context to WEBVIEW_1
+
+//do some web testing
+String myText = driver.findElement(By.cssSelector(".green_button")).click();
+
+driver.context("NATIVE_APP");
+
+// do more native testing if we want
+
+driver.quit();
+
+
+
 		
