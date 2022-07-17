@@ -19,7 +19,7 @@ public class BrowserBaseTest {
     public AppiumDriverLocalService service;
 
     @BeforeClass
-    public void ConfigureAppium() throws MalformedURLException {
+    public void configureAppium() throws MalformedURLException {
 
         service = new AppiumServiceBuilder().withAppiumJS(new File("/opt/homebrew/lib/node_modules/appium/build/lib/main.js"))
                 .withIPAddress("127.0.0.1").usingPort(4723).build();

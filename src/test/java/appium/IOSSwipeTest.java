@@ -14,7 +14,7 @@ public class IOSSwipeTest extends IOSBaseTest {
 
 
     @Test
-    public void IOSSwipeTestDemo() {
+    public void iOSSwipeTestDemo() {
         //Bundle ID
         Map<String, String> params = new HashMap<String, String>();
         params.put("bundleId", "com.apple.mobileslideshow");

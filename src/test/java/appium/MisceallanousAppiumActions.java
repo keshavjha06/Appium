@@ -14,7 +14,7 @@ import io.appium.java_client.android.nativekey.KeyEvent;
 public class MisceallanousAppiumActions extends BaseTest {
 
     @Test
-    public void Miscellanous() {
+    public void miscellanous() {
         //adb shell dumpsys window | grep -E 'mCurrentFocus'  - MAC
         // adb shell dumpsys window | find "mCurrentFocus"  - Windows
 

@@ -10,7 +10,7 @@ public class IOSSlider extends IOSBaseTest {
 
 
     @Test
-    public void IOSSliderTest() {
+    public void iOSSliderTest() {
 
         WebElement slider = driver.findElement(AppiumBy.iOSClassChain("**/XCUIElementTypeSlider[`label == 'AppElem'`]"));
         slider.sendKeys("0%"); //setValue

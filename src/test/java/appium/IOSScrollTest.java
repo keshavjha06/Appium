@@ -15,7 +15,7 @@ public class IOSScrollTest extends IOSBaseTest {
 
 
     @Test
-    public void IOSScrollTestDemo() throws InterruptedException {
+    public void iOSScrollTestDemo() throws InterruptedException {
         WebElement ele = driver.findElement(AppiumBy.accessibilityId("Web View"));
         Map<String, Object> params = new HashMap<>();
         params.put("direction", "down");

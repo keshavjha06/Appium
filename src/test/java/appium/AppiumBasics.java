@@ -11,7 +11,7 @@ import io.appium.java_client.AppiumBy;
 public class AppiumBasics extends BaseTest {
 
     @Test
-    public void WifiSettingsName() throws MalformedURLException {
+    public void wifiSettingsName() throws MalformedURLException {
         //code to start server
         //AndroidDriver , IOSDriver
         //Appium code - > Appium Server -> Mobile

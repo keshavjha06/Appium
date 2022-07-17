@@ -21,7 +21,7 @@ public class Ecommerce4Hybrid extends BaseTest {
 
 
     @Test
-    public void hybrid() throws InterruptedException {
+    public void hybridView() throws InterruptedException {
 
         driver.findElement(By.id("com.androidsample.generalstore:id/nameField")).sendKeys("Keshav");
         driver.hideKeyboard();

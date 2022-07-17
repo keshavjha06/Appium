@@ -11,7 +11,7 @@ import io.appium.java_client.AppiumBy;
 public class SwipeDemo extends BaseTest {
 
     @Test
-    public void SwipeDemoTest() {
+    public void swipeDemoTest() {
 
         driver.findElement(AppiumBy.accessibilityId("Views")).click();
         driver.findElement(AppiumBy.accessibilityId("Gallery")).click();

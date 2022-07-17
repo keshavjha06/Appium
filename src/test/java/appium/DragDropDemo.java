@@ -16,7 +16,7 @@ import io.appium.java_client.AppiumBy;
 public class DragDropDemo extends BaseTest{
 
 	@Test
-	public void DragDropTest() throws InterruptedException {
+	public void dragDropTest() throws InterruptedException {
 
 		driver.findElement(AppiumBy.accessibilityId("Views")).click();
 		driver.findElement(AppiumBy.accessibilityId("Drag and Drop")).click();

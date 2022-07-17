@@ -8,7 +8,7 @@ public class IOSBasics extends IOSBaseTest {
 
 
     @Test
-    public void IOSBasicsTest() {
+    public void iOSBasicsTest() {
         //Xpath, classname, IOS, iOSClassChain, iOSNsPredicateString, accessibility id, id
 
         driver.findElement(AppiumBy.accessibilityId("Alert Views")).click();
