@@ -1,13 +1,14 @@
 package appium;
 
 
+import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.DeviceRotation;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 
@@ -20,8 +21,8 @@ public class MisceallanousAppiumActions extends BaseTest {
 
         //App Package & App Activity
 
-        Activity activity = new Activity("io.appium.android.apis", "io.appium.android.apis.preference.PreferenceDependencies");
-        driver.startActivity(activity);
+        driver.executeScript("mobile: startActivity",
+                Map.of("intent", "io.appium.android.apis/io.appium.android.apis.preference.PreferenceDependencies"));
         driver.findElement(By.id("android:id/checkbox")).click();
         DeviceRotation landScape = new DeviceRotation(0, 0, 90);
         driver.rotate(landScape);
