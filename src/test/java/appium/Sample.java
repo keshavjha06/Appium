@@ -1,63 +1,58 @@
 package appium;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import io.appium.java_client.remote.AppiumWebElement;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import com.google.common.collect.ImmutableMap;
 
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.remote.AppiumWebElement;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class Sample {
 
+    // ignoreIfMissing: don't fail if there is no .env file; get() also checks System.getenv()
+    private static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
+
     public AndroidDriver driver;
-    public AppiumDriverLocalService service;
 
     @BeforeClass
-    public void configureAppium() throws MalformedURLException {
+    public void configureAppium() throws MalformedURLException, URISyntaxException {
 
-//		 service = new AppiumServiceBuilder().withAppiumJS(new File("/opt/homebrew/lib/node_modules/appium/build/lib/main.js"))
-//				.withIPAddress("127.0.0.1").usingPort(4723).build();
-//			service.start();
-        DesiredCapabilities caps = new DesiredCapabilities();
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setApp(requireEnv("BROWSERSTACK_APP_ID"));
 
-        // Set your access credentials
-        caps.setCapability("browserstack.user", "keshav_bm6tXG");
-        caps.setCapability("browserstack.key", "123456");
+        // BrowserStack-specific capabilities (W3C format)
+        Map<String, Object> bstackOptions = new HashMap<>();
+        bstackOptions.put("userName", requireEnv("BROWSERSTACK_USERNAME"));
+        bstackOptions.put("accessKey", requireEnv("BROWSERSTACK_ACCESS_KEY"));
+        bstackOptions.put("deviceName", "Google Pixel 3");
+        bstackOptions.put("osVersion", "9.0");
+        bstackOptions.put("projectName", "First Java Project");
+        bstackOptions.put("buildName", "browserstack-build-1");
+        bstackOptions.put("sessionName", "first_test");
+        options.setCapability("bstack:options", bstackOptions);
 
-        // Set URL of the application under test
-        caps.setCapability("app", "bs://971299524f839aa95e852372b6fd465aae139101");
-
-        // Specify device and os_version for testing
-        caps.setCapability("device", "Google Pixel 3");
-        caps.setCapability("os_version", "9.0");
-
-        // Set other BrowserStack capabilities
-        caps.setCapability("project", "First Java Project");
-        caps.setCapability("build", "browserstack-build-1");
-        caps.setCapability("name", "first_test");
-
-//			UiAutomator2Options options = new UiAutomator2Options();
-//		//	options.setDeviceName("KeshavPhone");
-//			options.setChromedriverExecutable("/Users/keshav.jha/Downloads/chromedriver");
-//			options.setCapability("app", "bs://11ab7560cd5aadf057f231ed8eb6a63b4eb2fe88");
-//			options.setCapability("device", "Google Pixel 3");
-//			options.setCapability("os_version", "9.0");
-//			options.setCapability("browserstack.user", "keshav_nS1FoC");
-//			options.setCapability("browserstack.key", "123456");
-        //	options.setApp("/Users/keshav.jha/IdeaProjects/Appium/src/test/java/resources/ApiDemos-debug.apk");
-        //options.setApp("/Users/keshav.jha/IdeaProjects/Appium/src/test/java/resources/General-Store.apk");
-
-        driver = new AndroidDriver(new URL("http://hub.browserstack.com"), caps);
+        driver = new AndroidDriver(new URI("https://hub-cloud.browserstack.com/wd/hub").toURL(), options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    }
+
+    private static String requireEnv(String name) {
+        String value = DOTENV.get(name);
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException(name + " is not set in .env or the environment");
+        }
+        return value;
     }
 
     public void longPressAction(WebElement ele) {
@@ -99,8 +94,9 @@ public class Sample {
 
     @AfterClass
     public void tearDown() {
-        driver.quit();
-        service.stop();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
 }
