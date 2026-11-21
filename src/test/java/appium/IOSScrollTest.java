@@ -18,13 +18,14 @@ public class IOSScrollTest extends IOSBaseTest {
     public void iOSScrollTestDemo() throws InterruptedException {
         WebElement ele = driver.findElement(AppiumBy.accessibilityId("Web View"));
         Map<String, Object> params = new HashMap<>();
-        params.put("direction", "down");
-        params.put("element", ((AppiumWebElement) ele).getId());
+        // Scroll the list until "Web View" is fully on screen (direction-based scroll on a label doesn't move the list)
+        params.put("elementId", ((AppiumWebElement) ele).getId());
+        params.put("toVisible", true);
 
         driver.executeScript("mobile:scroll", params);
         driver.findElement(AppiumBy.accessibilityId("Web View")).click();
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//XCUIElementTypeButton[@name='UIKitCatalog']")).click();
+        driver.findElement(AppiumBy.iOSNsPredicateString("type == 'XCUIElementTypeButton' AND label == 'UIKitCatalog'")).click();
         driver.findElement(AppiumBy.accessibilityId("Picker View")).click();
         driver.findElement(AppiumBy.accessibilityId("Red color component value")).sendKeys("80");
         driver.findElement(AppiumBy.accessibilityId("Green color component value")).sendKeys("220");
