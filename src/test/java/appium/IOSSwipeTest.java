@@ -19,10 +19,22 @@ public class IOSSwipeTest extends IOSBaseTest {
         Map<String, String> params = new HashMap<String, String>();
         params.put("bundleId", "com.apple.mobileslideshow");
         driver.executeScript("mobile:launchApp", params);
-        driver.findElement(AppiumBy.iOSNsPredicateString("label == 'All Photos'")).click();
-        List<WebElement> allPhotos = driver.findElements(AppiumBy.iOSClassChain("**/XCUIElementTypeCell"));
+        // First launch of Photos can show a system notifications permission alert
+        List<WebElement> dontAllow = driver.findElements(AppiumBy.accessibilityId("Don’t Allow"));
+        if (!dontAllow.isEmpty()) {
+            dontAllow.get(0).click();
+        }
+        // Newer Photos app shows a one-time "What's New" screen; dismiss it if present
+        List<WebElement> continueButton = driver.findElements(AppiumBy.accessibilityId("Continue"));
+        if (!continueButton.isEmpty()) {
+            continueButton.get(0).click();
+        }
+        // Photos is now split into "Library" and "Collections" tabs (no "All Photos"/"Albums")
+        driver.findElement(AppiumBy.accessibilityId("LibraryTab")).click();
+        By photo = AppiumBy.iOSNsPredicateString("type == 'XCUIElementTypeImage' AND label BEGINSWITH 'Photo,'");
+        List<WebElement> allPhotos = driver.findElements(photo);
         System.out.println(allPhotos.size());
-        driver.findElement(By.xpath("//XCUIElementTypeCell[1]")).click();
+        allPhotos.get(0).click();
         for (int i = 0; i < allPhotos.size(); i++) {
             System.out.println(driver.findElement(By.xpath("//XCUIElementTypeNavigationBar")).getAttribute("name"));
             Map<String, Object> params1 = new HashMap<String, Object>();
@@ -31,7 +43,7 @@ public class IOSSwipeTest extends IOSBaseTest {
             driver.executeScript("mobile:swipe", params1);
         }
         driver.navigate().back();
-        driver.findElement(AppiumBy.accessibilityId("Albums")).click();  //cleanup
+        driver.findElement(AppiumBy.accessibilityId("LibraryTab")).click();  //cleanup
 
 
     }
