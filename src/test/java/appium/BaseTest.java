@@ -2,12 +2,14 @@ package appium;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebElement;
+import io.appium.java_client.remote.AppiumWebElement;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -25,31 +27,36 @@ public class BaseTest {
     public AppiumDriverLocalService service;
 
     @BeforeClass
-    public void configureAppium() throws MalformedURLException {
+    public void configureAppium() throws MalformedURLException, URISyntaxException {
 
-        service = new AppiumServiceBuilder().withAppiumJS(new File("/opt/homebrew/lib/node_modules/appium/build/lib/main.js")).
-                withIPAddress("127.0.0.1").
-                usingPort(4723).build();
-        service.start();
-
-
+        URL serverUrl = new URI("http://127.0.0.1:4723").toURL();
+        // Reuse an Appium server that is already running; otherwise start one locally
+        if (!isServerRunning(serverUrl)) {
+            service = new AppiumServiceBuilder().withIPAddress("127.0.0.1").usingPort(4723).build();
+            service.start();
+        }
 
         UiAutomator2Options options = new UiAutomator2Options();
         options.setDeviceName("KeshavPhone"); //emulator
        // options.setDeviceName("Android Device");// real device
 
+        // Only set a chromedriver path if one exists locally (needed for hybrid/webview tests)
+        String chromedriver = System.getProperty("chromedriver", System.getProperty("user.home") + "/Downloads/chromedriver");
+        if (new File(chromedriver).exists()) {
+            options.setChromedriverExecutable(chromedriver);
+        }
 
-        options.setChromedriverExecutable("/Users/keshav.jha/Downloads/chromedriver");
-        //options.setApp("/Users/keshav.jha/IdeaProjects/Appium/src/test/java/resources/ApiDemos-debug.apk");
-        options.setApp("/Users/keshav.jha/IdeaProjects/Appium/src/test/java/resources/General-Store.apk");
+        // Pick the app with -Dapp=ApiDemos-debug.apk (defaults to General-Store.apk)
+        String app = System.getProperty("app", "General-Store.apk");
+        options.setApp(System.getProperty("user.dir") + "/src/test/java/resources/" + app);
 
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        driver = new AndroidDriver(serverUrl, options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
     public void longPressAction(WebElement ele) {
         ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture",
-                ImmutableMap.of("elementId", ((RemoteWebElement) ele).getId(),
+                ImmutableMap.of("elementId", ((AppiumWebElement) ele).getId(),
                         "duration", 2000));
     }
 
@@ -68,7 +75,7 @@ public class BaseTest {
 
     public void swipeAction(WebElement ele, String direction) {
         ((JavascriptExecutor) driver).executeScript("mobile: swipeGesture", ImmutableMap.of(
-                "elementId", ((RemoteWebElement) ele).getId(),
+                "elementId", ((AppiumWebElement) ele).getId(),
 
                 "direction", direction,
                 "percent", 0.75
@@ -84,10 +91,24 @@ public class BaseTest {
 
     }
 
+    private boolean isServerRunning(URL serverUrl) {
+        try {
+            java.net.HttpURLConnection conn = (java.net.HttpURLConnection) serverUrl.toURI().resolve("/status").toURL().openConnection();
+            conn.setConnectTimeout(2000);
+            return conn.getResponseCode() == 200;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @AfterClass
     public void tearDown() {
-        driver.quit();
-        service.stop();
+        if (driver != null) {
+            driver.quit();
+        }
+        if (service != null) {
+            service.stop();
+        }
     }
 
 }
