@@ -35,7 +35,7 @@ public class Ecommerce4Hybrid extends BaseTest {
         driver.findElement(By.id("com.androidsample.generalstore:id/appbar_btn_cart")).click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.attributeContains(driver.findElement(By.id("com.androidsample.generalstore:id/toolbar_title")), "text", "Cart"));
+        wait.until(ExpectedConditions.attributeContains(By.id("com.androidsample.generalstore:id/toolbar_title"), "text", "Cart"));
         List<WebElement> productPrices = driver.findElements(By.id("com.androidsample.generalstore:id/productPrice"));
         int count = productPrices.size();
         double totalSum = 0;

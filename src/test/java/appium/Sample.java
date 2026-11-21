@@ -7,7 +7,7 @@ import java.time.Duration;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebElement;
+import io.appium.java_client.remote.AppiumWebElement;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -62,7 +62,7 @@ public class Sample {
 
     public void longPressAction(WebElement ele) {
         ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture",
-                ImmutableMap.of("elementId", ((RemoteWebElement) ele).getId(),
+                ImmutableMap.of("elementId", ((AppiumWebElement) ele).getId(),
                         "duration", 2000));
     }
 
@@ -81,7 +81,7 @@ public class Sample {
 
     public void swipeAction(WebElement ele, String direction) {
         ((JavascriptExecutor) driver).executeScript("mobile: swipeGesture", ImmutableMap.of(
-                "elementId", ((RemoteWebElement) ele).getId(),
+                "elementId", ((AppiumWebElement) ele).getId(),
 
                 "direction", direction,
                 "percent", 0.75

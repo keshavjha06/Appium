@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebElement;
+import io.appium.java_client.remote.AppiumWebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -23,7 +23,7 @@ public class DragDropDemo extends BaseTest{
 		WebElement source = driver.findElement(By.id("io.appium.android.apis:id/drag_dot_1"));
 		
 		((JavascriptExecutor) driver).executeScript("mobile: dragGesture", ImmutableMap.of(
-			    "elementId", ((RemoteWebElement) source).getId(),
+			    "elementId", ((AppiumWebElement) source).getId(),
 			    "endX", 619,
 			    "endY", 560
 			));

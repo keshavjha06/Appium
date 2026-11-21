@@ -27,7 +27,7 @@ public class IOSSwipeTest extends IOSBaseTest {
             System.out.println(driver.findElement(By.xpath("//XCUIElementTypeNavigationBar")).getAttribute("name"));
             Map<String, Object> params1 = new HashMap<String, Object>();
             params1.put("direction", "left");
-            //params1.put("element", ((RemoteWebElement)ele).getId());
+            //params1.put("element", ((AppiumWebElement)ele).getId());
             driver.executeScript("mobile:swipe", params1);
         }
         driver.navigate().back();
